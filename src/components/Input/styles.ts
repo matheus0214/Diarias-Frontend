@@ -25,14 +25,14 @@ export const Container = styled.div<ContainerProps>`
   ${(props) =>
     props.focused &&
     css`
-      border-color: #00d2ff;
-      color: #00d2ff;
+      border-color: #aa076b;
+      color: #aa076b;
     `}
 
   ${(props) =>
     props.hasValue &&
     css`
-      color: #00d2ff;
+      color: #aa076b;
     `}
 
   ${(props) =>

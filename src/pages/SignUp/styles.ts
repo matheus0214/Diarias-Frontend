@@ -14,7 +14,7 @@ export const Container = styled.div`
 const appearFrame = keyframes`
   from {
     opacity: 0;
-    transform: translateX(-50px);
+    transform: translateX(50px);
   }
 
   to {
@@ -23,7 +23,7 @@ const appearFrame = keyframes`
   }
 `;
 
-export const SignInContent = styled.div`
+export const SignUpContent = styled.div`
   display: flex;
   place-content: center;
   flex-direction: column;
@@ -97,7 +97,7 @@ export const SignInContent = styled.div`
   }
 `;
 
-export const SignInImage = styled.div`
+export const SignUpImage = styled.div`
   /* background: linear-gradient(90deg, #00d2ff, #3a7bd5); */
   background: linear-gradient(90deg, #aa076b, #61045f);
   position: relative;

@@ -1,73 +1,87 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { FiUser, FiLock, FiArrowLeft, FiMail } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import { FiMail, FiLock, FiLogIn } from 'react-icons/fi';
 import * as Yup from 'yup';
 
-/** Components */
 import Input from '../../components/Input';
 
-/** Utils */
-import getValidationErrors from '../../utils/getValidationErrors';
+import api from '../../services/api';
 
-/** Assets */
-import SignImage from '../../assets/sign-in-image.svg';
-import Logo from '../../assets/logo.png';
+import getValidationErros from '../../utils/getValidationErrors';
 
-/** Context */
-import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 
-import { Container, SignInContent, SignInImage, Dots } from './styles';
+import Logo from '../../assets/logo.png';
+import SignImage from '../../assets/sig-up-image.svg';
 
-interface FormSignInData {
+import { Container, Dots, SignUpContent, SignUpImage } from './styles';
+
+interface FormData {
+  name: string;
   email: string;
   password: string;
 }
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const { signIn } = useAuth();
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(
-    async (data: FormSignInData) => {
+    async (data: FormData) => {
       try {
-        formRef.current?.setErrors([]);
-
         const schema = Yup.object().shape({
+          name: Yup.string().required('Nome e obrigatório'),
           email: Yup.string()
-            .email('Formato de email invalido')
-            .required('Email obrigatório'),
-          password: Yup.string().required('Senha obrigatório'),
+            .email('E-mail invalido')
+            .required('E-mail e obrigatório'),
+          password: Yup.string().min(6, 'Senha mínimo de 6 digitos'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        signIn({ email: data.email, password: data.password });
+        await api.post('users', data);
+
+        addToast({
+          type: 'success',
+          title: 'Cadastro',
+          description: 'Cadastro realizado com sucesso',
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          formRef.current?.setErrors(getValidationErrors(err));
+          formRef.current?.setErrors(getValidationErros(err));
           return;
         }
 
         addToast({
-          title: 'Erro',
-          description: 'Erro ao realizar o login',
           type: 'error',
+          title: 'Erro',
+          description: 'Erro ao realizar o cadastro',
         });
       }
     },
-    [signIn, addToast]
+    [addToast]
   );
 
   return (
     <Container>
       <Dots />
-      <SignInContent>
+
+      <SignUpImage>
+        <h1>O seu portal de empregabilidade</h1>
+        <h4>
+          Publique os trabalhos que você realiza diariamente ou encontre
+          profisionais que você necessita
+        </h4>
+        <img src={SignImage} alt="" />
+
+        <Dots style={{ right: '0', bottom: '0', opacity: '0.1' }} />
+      </SignUpImage>
+
+      <SignUpContent>
         <Form onSubmit={handleSubmit} ref={formRef}>
           <img src={Logo} alt="" width={200} height={200} />
 
@@ -88,6 +102,7 @@ const SignIn: React.FC = () => {
             }}
           />
 
+          <Input icon={FiUser} name="name" placeholder="Nome" />
           <Input icon={FiMail} name="email" placeholder="Email" />
           <Input
             icon={FiLock}
@@ -96,27 +111,16 @@ const SignIn: React.FC = () => {
             placeholder="Senha"
           />
 
-          <button type="submit">Entrar</button>
+          <button type="submit">Cadastrar</button>
 
-          <Link to="/signup">
-            <FiLogIn />
-            Criar conta
+          <Link to="/">
+            <FiArrowLeft />
+            Fazer login
           </Link>
         </Form>
-      </SignInContent>
-
-      <SignInImage>
-        <h1>O seu portal de empregabilidade</h1>
-        <h4>
-          Publique os trabalhos que você realiza diariamente ou encontre
-          profisionais que você necessita
-        </h4>
-        <img src={SignImage} alt="" />
-
-        <Dots style={{ right: '0', bottom: '0', opacity: '0.1' }} />
-      </SignInImage>
+      </SignUpContent>
     </Container>
   );
 };
 
-export default SignIn;
+export default SignUp;
