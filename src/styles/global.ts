@@ -13,7 +13,7 @@ export default createGlobalStyle`
   }
 
   body, input, button {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', serif;
     font-size: 16px;
   }
 

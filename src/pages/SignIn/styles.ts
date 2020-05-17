@@ -1,12 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+import DotsImage from '../../assets/polka-dots.svg';
 
 export const Container = styled.div`
   height: 100vh;
-  /* background: linear-gradient(-90deg, #b489f7, #41cfe7); */
   background: #fcfcfc;
+  position: relative;
 
   display: flex;
   align-items: stretch;
+`;
+
+const appearFrame = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
 `;
 
 export const SignInContent = styled.div`
@@ -19,8 +33,10 @@ export const SignInContent = styled.div`
   max-width: 700px;
 
   form {
-    padding: 60px 40px;
-    width: 400px;
+    animation-name: ${appearFrame};
+    animation-duration: 2s;
+    padding: 10px 50px 60px;
+    width: 420px;
     text-align: center;
     background: #fff;
     box-shadow: 0px 0px 20px -8px #e3e3e3;
@@ -40,8 +56,8 @@ export const SignInContent = styled.div`
       font-size: 17px;
       font-weight: bold;
       color: #fff;
-      background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-      box-shadow: 0px 9px 21px 0px #7babed;
+      background: linear-gradient(90deg, #aa076b, #61045f);
+      box-shadow: 0px 9px 21px 0px #bf2182;
 
       &:hover {
         opacity: 0.85;
@@ -54,13 +70,13 @@ export const SignInContent = styled.div`
       justify-content: center;
       text-decoration: none;
       font-weight: bold;
-      color: #00d2ff;
+      color: #aa076b;
 
       margin-top: 50px;
       transition: color 0.2s;
 
       &:hover {
-        color: #3a7bd5;
+        color: #61045f;
       }
 
       svg {
@@ -73,7 +89,7 @@ export const SignInContent = styled.div`
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+      background: linear-gradient(45deg, #aa076b, #61045f);
       top: -40px;
       right: -40px;
       opacity: 0.5;
@@ -82,7 +98,9 @@ export const SignInContent = styled.div`
 `;
 
 export const SignInImage = styled.div`
-  background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+  /* background: linear-gradient(90deg, #00d2ff, #3a7bd5); */
+  background: linear-gradient(90deg, #aa076b, #61045f);
+  position: relative;
 
   width: 100%;
 
@@ -111,4 +129,17 @@ export const SignInImage = styled.div`
     width: 600px;
     height: 600px;
   }
+
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+`;
+
+export const Dots = styled.div`
+  background: url(${DotsImage});
+
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  z-index: 999;
 `;
